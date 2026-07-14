@@ -75,6 +75,11 @@ int main(void) {
         }
     }
 
+    //flush before forking: when stdout is a pipe/file it is fully buffered,
+    //and fork() would duplicate the unflushed buffer into every child,
+    //re-printing the prompts once per child
+    fflush(stdout);
+
     //fork
     int offset = 0;
     for (int i = 0; i < num_procs; i++) {
